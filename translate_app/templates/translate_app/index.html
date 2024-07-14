@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+
+    <title>Translation App</title>
+    <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <style>
+      #translated-text {
+        border: 1px solid gray;
+        min-height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container">
+      <h1>Translation App</h1>
+      <!-- Form per tradurre il testo -->
+      <form
+        id="translation-form"
+        hx-post="/api/translate/"
+        hx-target="#translated-text"
+        hx-swap="innerHTML"
+      >
+        <fieldset class="grid">
+          <label for="source_lang">Source Language:</label>
+          <select
+            id="source_lang"
+            name="source_lang"
+            hx-get="/api/languages/?def=it"
+            hx-trigger="load"
+            hx-target="#source_lang"
+            hx-swap="innerHTML"
+          ></select>
+
+          <label for="target_lang">Target Language:</label>
+          <select
+            id="target_lang"
+            name="target_lang"
+            hx-get="/api/languages/?def=en"
+            hx-trigger="load"
+            hx-target="#target_lang"
+            hx-swap="innerHTML"
+          ></select>
+        </fieldset>
+        <div class="grid">
+          <div>
+            <textarea
+              id="text"
+              name="text"
+              rows="4"
+              cols="50"
+              maxlength="512"
+              placeholder="Text to Translate"
+            ></textarea>
+          </div>
+          <div><div id="translated-text"></div></div>
+        </div>
+        <dvi>
+          <button
+            type="button"
+            id="translate-button"
+            hx-trigger="click"
+            hx-post="/api/translate/"
+            hx-target="#translated-text"
+            hx-swap="innerHTML"
+          >
+            Translate
+          </button>
+        </dvi>
+      </form>
+    </main>
+  </body>
+</html>
